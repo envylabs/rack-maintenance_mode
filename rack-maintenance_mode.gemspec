@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Rack::MaintenanceMode::VERSION
   s.authors     = ["Nathaniel Bibler"]
   s.email       = ["git@nathanielbibler.com"]
-  s.homepage    = ""
+  s.homepage    = "https://github.com/envylabs/rack-maintenance_mode"
   s.summary     = %q{Manage maintenance mode for your application}
   s.description = %q{Allows you to create a customized maintenance mode for your application that is run early in the Rack stack.}
 
