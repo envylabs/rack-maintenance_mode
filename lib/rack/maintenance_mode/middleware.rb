@@ -3,11 +3,21 @@ require 'rack/maintenance_mode/default_mode_check'
 module Rack
   module MaintenanceMode
     ##
-    # A Rack middleware to automatically put the Rack application into maintenance
-    # mode (HTTP 503).
+    # A Rack middleware to automatically put the Rack application into
+    # maintenance mode (HTTP 503).
     #
-    # This middleware allows you to optionally allow users to pass through the 503
-    # wall and access the application by IP or by route requested.
+    # The default behaviour may be overridden by passing specific options at
+    # the time of initialization.
+    #
+    # Available options:
+    #
+    # `:if` - Any object which responds to `call(hash)` and returns a
+    # true/false-like result.  Used for determining whether or not we're in
+    # maintenance mode.
+    #
+    # `:response` - Any object which responds to `call(hash)` and returns a
+    # Rack-compatible response array.  Used for generating the client response
+    # when in maintenance mode.
     #
     class Middleware
       DEFAULT_RESPONSE = Proc.new { |env| [503, {"Content-Type" => "text/html"}, ["<html><body><h2>We are undergoing maintenance right now, please try again soon.</body></html>"]] }

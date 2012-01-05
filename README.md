@@ -63,7 +63,7 @@ when using this gem with Rails (in `config/application.rb`):
 
 ```ruby
 require File.expand_path('../boot', __FILE__)
-require 'rails/all
+require 'rails/all'
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
 module MySuperApp
