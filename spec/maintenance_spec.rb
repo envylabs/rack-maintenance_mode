@@ -10,17 +10,17 @@ describe Rack::MaintenanceMode do
     maintain_env "MAINTENANCE"
 
     context "with ENV[\"MAINTENANCE\"] enabled" do
-      it 'should be in maintenance mode' do
+      it 'is in maintenance mode' do
         ['t', 'true', 'enable', 'enabled', 'y', 'yes', "yes\n"].each do |setting|
           ENV['MAINTENANCE'] = setting
-          app.call({}).should be_a_maintenance_response, "Failed with #{setting.inspect}"
+          expect(app.call({})).to be_a_maintenance_response, "Failed with #{setting.inspect}"
         end
       end
 
-      it 'should contain the default response' do
+      it 'contains the default response' do
         ['t', 'true', 'enable', 'enabled', 'y', 'yes', "yes\n"].each do |setting|
           ENV['MAINTENANCE'] = setting
-          app.call({}).should contain_the_default_response
+          expect(app.call({})).to contain_the_default_response
         end
       end
     end
@@ -28,20 +28,20 @@ describe Rack::MaintenanceMode do
     context 'with ENV["MAINTENANCE"] disabled' do
       before(:each) { ENV['MAINTENANCE'] = 'false' }
 
-      it { should_not be_a_maintenance_response }
+      it { is_expected.to_not be_a_maintenance_response }
 
-      it 'should return the response content' do
-        subject.last.should == ['Ok']
+      it 'returns the response content' do
+        expect(subject.last).to eq ['Ok']
       end
     end
 
     context 'with ENV["MAINTENANCE"] being nil' do
       before(:each) { ENV['MAINTENANCE'] = nil }
 
-      it { should_not be_a_maintenance_response }
+      it { is_expected.to_not be_a_maintenance_response }
 
-      it 'should return the response content' do
-        subject.last.should == ['Ok']
+      it 'returns the response content' do
+        expect(subject.last).to eq ['Ok']
       end
     end
   end
@@ -50,17 +50,17 @@ describe Rack::MaintenanceMode do
   context 'with a custom mode check (if)' do
     context 'when the custom check returns truthie' do
       let(:options) { {:if => -> env { true }} }
-      it { should be_a_maintenance_response }
-      it { should contain_the_default_response }
+      it { is_expected.to be_a_maintenance_response }
+      it { is_expected.to contain_the_default_response }
     end
 
     context 'when the custom check returns false' do
       let(:options) { {:if => -> env { false }} }
 
-      it { should_not be_a_maintenance_response }
+      it { is_expected.to_not be_a_maintenance_response }
 
-      it 'should return the response content' do
-        subject.last.should == ['Ok']
+      it 'returns the response content' do
+        expect(subject.last).to eq ['Ok']
       end
     end
   end
@@ -73,16 +73,16 @@ describe Rack::MaintenanceMode do
     context 'with maintenance enabled' do
       before(:each) { ENV['MAINTENANCE'] = 'true' }
 
-      it 'should return the custom response' do
-        subject.last.should == ['Custom']
+      it 'returns the custom response' do
+        expect(subject.last).to eq ['Custom']
       end
     end
 
     context 'with maintenance disabled' do
       before(:each) { ENV['MAINTENANCE'] = 'false' }
 
-      it 'should return the original response' do
-        subject.last.should == ['Ok']
+      it 'returns the original response' do
+        expect(subject.last).to eq ['Ok']
       end
     end
   end
